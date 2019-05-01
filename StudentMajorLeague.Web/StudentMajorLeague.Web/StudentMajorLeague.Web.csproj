@@ -51,6 +51,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.5.4.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.4.0\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
@@ -73,6 +76,9 @@
       <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.1\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.4.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
     </Reference>
@@ -146,6 +152,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Dependency\NinjectControllerFactory.cs" />
     <Compile Include="Dependency\NinjectResolver.cs" />
     <Compile Include="Dependency\NinjectScope.cs" />
@@ -154,18 +161,48 @@
     </Compile>
     <Compile Include="Infrastructure\AuthOptions.cs" />
     <Compile Include="Infrastructure\JsonResults.cs" />
-    <Compile Include="Infrastructure\StudentMajorLeagueConfiguration.cs" />
-    <Compile Include="Infrastructure\StudentMajorLeagueDbContext.cs" />
+    <Compile Include="Infrastructure\SMLConfiguration.cs" />
+    <Compile Include="Infrastructure\SMLDbContext.cs" />
     <Compile Include="Models\Entities\Result.cs" />
-    <Compile Include="Models\Entities\Profile.cs" />
-    <Compile Include="Models\Entities\Parameter.cs" />
     <Compile Include="Models\Entities\League.cs" />
     <Compile Include="Models\Entities\HistoryBlock.cs" />
     <Compile Include="Models\Entities\Competition.cs" />
     <Compile Include="Models\Entities\Chain.cs" />
     <Compile Include="Models\Entities\Role.cs" />
     <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\Requests\AuthorizationRequestModel.cs" />
+    <Compile Include="Models\Requests\UserRegistrationRequestModel.cs" />
+    <Compile Include="Models\Requests\UserRequestModel.cs" />
+    <Compile Include="Models\Responses\UserResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ChainRepository\ChainReadRepository.cs" />
+    <Compile Include="Repositories\ChainRepository\ChainWriteRepository.cs" />
+    <Compile Include="Repositories\ChainRepository\Interfaces\IChainReadRepository.cs" />
+    <Compile Include="Repositories\ChainRepository\Interfaces\IChainWriteRepository.cs" />
+    <Compile Include="Repositories\HistoryBlockRepository\HistoryBlockReadRepository.cs" />
+    <Compile Include="Repositories\HistoryBlockRepository\HistoryBlockWriteRepository.cs" />
+    <Compile Include="Repositories\HistoryBlockRepository\Interfaces\IHistoryBlockReadRepository.cs" />
+    <Compile Include="Repositories\HistoryBlockRepository\Interfaces\IHistoryBlockWriteRepository.cs" />
+    <Compile Include="Repositories\RoleRepository\Interfaces\IRoleReadRepository.cs" />
+    <Compile Include="Repositories\RoleRepository\Interfaces\IRoleWriteRepository.cs" />
+    <Compile Include="Repositories\RoleRepository\RoleReadRepository.cs" />
+    <Compile Include="Repositories\RoleRepository\RoleWriteRepository.cs" />
+    <Compile Include="Repositories\UserRepository\Interfaces\IUserReadRepository.cs" />
+    <Compile Include="Repositories\UserRepository\Interfaces\IUserWriteRepository.cs" />
+    <Compile Include="Repositories\UserRepository\UserReadRepository.cs" />
+    <Compile Include="Repositories\UserRepository\UserWriteRepository.cs" />
+    <Compile Include="Services\ChainService\ChainReadService.cs" />
+    <Compile Include="Services\ChainService\ChainWriteService.cs" />
+    <Compile Include="Services\ChainService\Interfaces\IChainReadService.cs" />
+    <Compile Include="Services\ChainService\Interfaces\IChainWriteService.cs" />
+    <Compile Include="Services\RoleService\Interfaces\IRoleReadService.cs" />
+    <Compile Include="Services\RoleService\Interfaces\IRoleWriteService.cs" />
+    <Compile Include="Services\RoleService\RoleReadService.cs" />
+    <Compile Include="Services\RoleService\RoleWriteService.cs" />
+    <Compile Include="Services\UserService\Interfaces\IUserReadService.cs" />
+    <Compile Include="Services\UserService\Interfaces\IUserWriteService.cs" />
+    <Compile Include="Services\UserService\UserReadService.cs" />
+    <Compile Include="Services\UserService\UserWriteService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -176,13 +213,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\Requests\" />
-    <Folder Include="Models\Responses\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

@@ -2,12 +2,24 @@
 using Ninject;
 using Ninject.Web.Common;
 using Ninject.Web.Common.WebHost;
+using StudentMajorLeague.Web.App_Start;
 using StudentMajorLeague.Web.Dependency;
 using StudentMajorLeague.Web.Infrastructure;
+using StudentMajorLeague.Web.Repositories.ChainRepository;
+using StudentMajorLeague.Web.Repositories.HistoryBlockRepository;
+using StudentMajorLeague.Web.Repositories.RoleRepository;
+using StudentMajorLeague.Web.Repositories.UserRepository;
+using StudentMajorLeague.Web.Services.ChainService;
+using StudentMajorLeague.Web.Services.RoleService;
+using StudentMajorLeague.Web.Services.UserService;
 using System;
 using System.Configuration;
 using System.Web;
 using System.Web.Http;
+using WebActivatorEx;
+
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
+[assembly: ApplicationShutdownMethod(typeof(NinjectWebCommon), "Stop")]
 
 namespace StudentMajorLeague.Web.App_Start
 {
@@ -59,14 +71,31 @@ namespace StudentMajorLeague.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             //Bind settings
-            var settings = StudentMajorLeagueConfiguration.FromWebConfig(ConfigurationManager.AppSettings);
-            kernel.Bind<StudentMajorLeagueConfiguration>().ToConstant(settings);
+            var settings = SMLConfiguration.FromWebConfig(ConfigurationManager.AppSettings);
+            kernel.Bind<SMLConfiguration>().ToConstant(settings);
 
             //Bind Services
+            kernel.Bind<IRoleReadService>().To<RoleReadService>();
+            kernel.Bind<IRoleWriteService>().To<RoleWriteService>();
 
+            kernel.Bind<IUserReadService>().To<UserReadService>();
+            kernel.Bind<IUserWriteService>().To<UserWriteService>();
+
+            kernel.Bind<IChainReadService>().To<ChainReadService>();
+            kernel.Bind<IChainWriteService>().To<ChainWriteService>();
 
             //Bind repositories
+            kernel.Bind<IRoleReadRepository>().To<RoleReadRepository>();
+            kernel.Bind<IRoleWriteRepository>().To<RoleWriteRepository>();
 
+            kernel.Bind<IUserReadRepository>().To<UserReadRepository>();
+            kernel.Bind<IUserWriteRepository>().To<UserWriteRepository>();
+
+            kernel.Bind<IHistoryBlockReadRepository>().To<HistoryBlockReadRepository>();
+            kernel.Bind<IHistoryBlockWriteRepository>().To<HistoryBlockWriteRepository>();
+
+            kernel.Bind<IChainReadRepository>().To<ChainReadRepository>();
+            kernel.Bind<IChainWriteRepository>().To<ChainWriteRepository>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
         }

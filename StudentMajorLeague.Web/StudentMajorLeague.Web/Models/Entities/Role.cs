@@ -1,12 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentMajorLeague.Web.Models.Entities
 {
     public class Role
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Value { get; set; }
+
+
+        public ICollection<User> Users { get; set; }
     }
 }

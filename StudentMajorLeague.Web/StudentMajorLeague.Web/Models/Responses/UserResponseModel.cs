@@ -1,12 +1,16 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace StudentMajorLeague.Web.Models.Entities
+namespace StudentMajorLeague.Web.Models.Responses
 {
-    public class Profile
+    public class UserResponseModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
+
+        public string Email { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public int RoleId { get; set; }
 
         public string Name { get; set; }
 
@@ -21,5 +25,9 @@ namespace StudentMajorLeague.Web.Models.Entities
         public string City { get; set; }
 
         public int LeagueId { get; set; }
+
+        public double? Height { get; set; }
+
+        public double? Weight { get; set; }
     }
 }
