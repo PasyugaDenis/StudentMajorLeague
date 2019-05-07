@@ -6,7 +6,10 @@ using StudentMajorLeague.Web.App_Start;
 using StudentMajorLeague.Web.Dependency;
 using StudentMajorLeague.Web.Infrastructure;
 using StudentMajorLeague.Web.Repositories.ChainRepository;
+using StudentMajorLeague.Web.Repositories.CompetitionRepository;
 using StudentMajorLeague.Web.Repositories.HistoryBlockRepository;
+using StudentMajorLeague.Web.Repositories.LeagueRepository;
+using StudentMajorLeague.Web.Repositories.ResultRepository;
 using StudentMajorLeague.Web.Repositories.RoleRepository;
 using StudentMajorLeague.Web.Repositories.UserRepository;
 using StudentMajorLeague.Web.Services.ChainService;
@@ -75,27 +78,36 @@ namespace StudentMajorLeague.Web.App_Start
             kernel.Bind<SMLConfiguration>().ToConstant(settings);
 
             //Bind Services
+            kernel.Bind<IChainReadService>().To<ChainReadService>();
+            kernel.Bind<IChainWriteService>().To<ChainWriteService>();
+
             kernel.Bind<IRoleReadService>().To<RoleReadService>();
             kernel.Bind<IRoleWriteService>().To<RoleWriteService>();
 
             kernel.Bind<IUserReadService>().To<UserReadService>();
             kernel.Bind<IUserWriteService>().To<UserWriteService>();
 
-            kernel.Bind<IChainReadService>().To<ChainReadService>();
-            kernel.Bind<IChainWriteService>().To<ChainWriteService>();
-
             //Bind repositories
+            kernel.Bind<IChainReadRepository>().To<ChainReadRepository>();
+            kernel.Bind<IChainWriteRepository>().To<ChainWriteRepository>();
+
+            kernel.Bind<ICompetitionReadRepository>().To<CompetitionReadRepository>();
+            kernel.Bind<ICompetitionWriteRepository>().To<CompetitionWriteRepository>();
+
+            kernel.Bind<IHistoryBlockReadRepository>().To<HistoryBlockReadRepository>();
+            kernel.Bind<IHistoryBlockWriteRepository>().To<HistoryBlockWriteRepository>();
+
+            kernel.Bind<ILeagueReadRepository>().To<LeagueReadRepository>();
+            kernel.Bind<ILeagueWriteRepository>().To<LeagueWriteRepository>();
+
+            kernel.Bind<IResultReadRepository>().To<ResultReadRepository>();
+            kernel.Bind<IResultWriteRepository>().To<ResultWriteRepository>();
+
             kernel.Bind<IRoleReadRepository>().To<RoleReadRepository>();
             kernel.Bind<IRoleWriteRepository>().To<RoleWriteRepository>();
 
             kernel.Bind<IUserReadRepository>().To<UserReadRepository>();
             kernel.Bind<IUserWriteRepository>().To<UserWriteRepository>();
-
-            kernel.Bind<IHistoryBlockReadRepository>().To<HistoryBlockReadRepository>();
-            kernel.Bind<IHistoryBlockWriteRepository>().To<HistoryBlockWriteRepository>();
-
-            kernel.Bind<IChainReadRepository>().To<ChainReadRepository>();
-            kernel.Bind<IChainWriteRepository>().To<ChainWriteRepository>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
         }

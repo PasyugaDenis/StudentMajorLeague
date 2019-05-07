@@ -49,7 +49,8 @@ namespace StudentMajorLeague.Web.Infrastructure
             //Role
             modelBuilder.Entity<Role>()
                 .HasMany(r => r.Users)
-                .WithRequired(u => u.Role);
+                .WithRequired(u => u.Role)
+                .HasForeignKey(u => u.RoleId);
             
             //Result
 
@@ -66,9 +67,6 @@ namespace StudentMajorLeague.Web.Infrastructure
                 .WithRequired(r => r.Competition);
 
             //Chain
-            modelBuilder.Entity<Chain>()
-                .HasMany(c => c.HistoryBlocks)
-                .WithRequired(hb => hb.Chain);
 
             base.OnModelCreating(modelBuilder);
         }

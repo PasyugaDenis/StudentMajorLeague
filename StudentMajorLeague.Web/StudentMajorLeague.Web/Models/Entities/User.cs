@@ -39,12 +39,12 @@ namespace StudentMajorLeague.Web.Models.Entities
         public double? Height { get; set; }
 
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
-        public League League { get; set; }
+        public virtual League League { get; set; }
 
-        public Chain Chain { get; set; }
+        public virtual Chain Chain { get; set; }
 
-        public ICollection<Result> Results { get; set; }
+        public virtual ICollection<Result> Results { get; set; }
     }
 }

@@ -28,5 +28,11 @@ namespace StudentMajorLeague.Web.Repositories.ChainRepository
             dbContext.Entry(model).State = EntityState.Modified;
             return dbContext.SaveChangesAsync();
         }
+
+        public Task RemoveAsync(Chain model)
+        {
+            dbContext.Chains.Remove(model);
+            return dbContext.SaveChangesAsync();
+        }
     }
 }

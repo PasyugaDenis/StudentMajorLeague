@@ -8,5 +8,7 @@ namespace StudentMajorLeague.Web.Services.ChainService
         Task<Chain> CreateChainAsync(Chain chain);
 
         Task<HistoryBlock> AddHistoryBlockToChainAsync(int chainId, HistoryBlock block);
+
+        Task RemoveChainAsync(int chainId);
     }
 }

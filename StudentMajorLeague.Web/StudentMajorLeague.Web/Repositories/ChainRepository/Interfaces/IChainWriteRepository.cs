@@ -8,5 +8,7 @@ namespace StudentMajorLeague.Web.Repositories.ChainRepository
         Task<Chain> AddAsync(Chain model);
 
         Task UpdateAsync(Chain model);
+
+        Task RemoveAsync(Chain model);
     }
 }

@@ -9,7 +9,7 @@ namespace StudentMajorLeague.Web.Services.UserService
 
         Task<User> UpdateUserAsync(User model);
 
-        Task DeleteUserAsync(int userId);
+        Task RemoveUserAsync(int userId);
 
         string HashPassword(string password);
     }

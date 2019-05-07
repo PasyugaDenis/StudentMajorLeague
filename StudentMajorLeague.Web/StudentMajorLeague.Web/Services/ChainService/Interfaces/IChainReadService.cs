@@ -15,5 +15,7 @@ namespace StudentMajorLeague.Web.Services.ChainService
         Task<List<HistoryBlock>> GetBlocksInChainAsync(int chainId);
 
         Task<bool> IsChainValidAsync(int chainId);
+
+        Task<int> GetMaxBlocksIdAsync();
     }
 }

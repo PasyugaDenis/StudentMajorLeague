@@ -34,7 +34,7 @@ namespace StudentMajorLeague.Web.Services.UserService
             return await userWriteRepository.AddAsync(model);
         }
 
-        public async Task UpdateUserAsync(User model)
+        public async Task<User> UpdateUserAsync(User model)
         {
             //update user
             var user = await userReadRepository.GetByIdAsync(model.Id);
@@ -57,11 +57,11 @@ namespace StudentMajorLeague.Web.Services.UserService
             return user;
         }
 
-        public async Task DeleteUserAsync(int userId)
+        public async Task RemoveUserAsync(int userId)
         {
             var user = await userReadRepository.GetByIdAsync(userId);
 
-            await userWriteRepository.DeleteAsync(user);
+            await userWriteRepository.RemoveAsync(user);
         }
 
         public string HashPassword(string password)

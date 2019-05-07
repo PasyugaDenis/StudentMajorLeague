@@ -15,6 +15,6 @@ namespace StudentMajorLeague.Web.Models.Entities
         public int MainLeagueId { get; set; }
 
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

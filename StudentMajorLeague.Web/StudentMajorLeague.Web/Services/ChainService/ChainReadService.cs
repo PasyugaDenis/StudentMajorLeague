@@ -54,23 +54,24 @@ namespace StudentMajorLeague.Web.Services.ChainService
 
         public async Task<List<HistoryBlock>> GetBlocksInChainAsync(int chainId)
         {
-            var chain = await chainReadRepository.GetByIdAsync(chainId);
+            var blocks = await historyBlockReadRepository.GetBlocksByChainIdAsync(chainId);
 
-            return chain.HistoryBlocks.ToList();
+            return blocks;
         }
 
         public async Task<bool> IsChainValidAsync(int chainId)
         {
             var chain = await chainReadRepository.GetByIdAsync(chainId);
+            var blocks = await historyBlockReadRepository.GetBlocksByChainIdAsync(chainId);
 
-            if (chain.HistoryBlocks?.Count > 2)
+            if (blocks?.Count > 0)
             {
                 HistoryBlock previousBlock = null;
                 HistoryBlock block = null;
 
-                for (var i = 0; i < chain.HistoryBlocks.Count; i++)
+                for (var i = 0; i < blocks.Count; i++)
                 {
-                    block = chain.HistoryBlocks.ElementAt(i);
+                    block = blocks.ElementAt(i);
 
                     if (block.Hash != block.HashValues())
                     {
@@ -87,6 +88,13 @@ namespace StudentMajorLeague.Web.Services.ChainService
             }
 
             return true;
+        }
+
+        public async Task<int> GetMaxBlocksIdAsync()
+        {
+            var result = await historyBlockReadRepository.GetMaxIdAsync();
+
+            return result;
         }
     }
 }

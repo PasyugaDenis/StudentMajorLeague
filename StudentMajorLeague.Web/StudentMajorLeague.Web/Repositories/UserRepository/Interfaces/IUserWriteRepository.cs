@@ -5,10 +5,10 @@ namespace StudentMajorLeague.Web.Repositories.UserRepository
 {
     public interface IUserWriteRepository
     {
-        Task<User> AddAsync(User user);
+        Task<User> AddAsync(User model);
 
-        Task UpdateAsync(User user);
+        Task UpdateAsync(User model);
 
-        Task DeleteAsync(User user);
+        Task RemoveAsync(User model);
     }
 }

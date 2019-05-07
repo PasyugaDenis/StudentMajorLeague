@@ -20,6 +20,6 @@ namespace StudentMajorLeague.Web.Models.Entities
         public string Description { get; set; }
 
 
-        public ICollection<Result> Results { get; set; }
+        public virtual ICollection<Result> Results { get; set; }
     }
 }

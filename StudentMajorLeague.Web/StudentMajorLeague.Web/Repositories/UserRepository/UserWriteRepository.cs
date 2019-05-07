@@ -30,7 +30,7 @@ namespace StudentMajorLeague.Web.Repositories.UserRepository
             return dbContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(User user)
+        public Task RemoveAsync(User user)
         {
             dbContext.Users.Remove(user);
             return dbContext.SaveChangesAsync();

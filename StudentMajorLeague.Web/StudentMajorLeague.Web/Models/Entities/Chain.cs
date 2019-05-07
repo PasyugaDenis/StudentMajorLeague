@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentMajorLeague.Web.Models.Entities
@@ -14,8 +13,6 @@ namespace StudentMajorLeague.Web.Models.Entities
         public DateTime CreatedOn { get; set; }
 
 
-        public User User { get; set; }
-
-        public ICollection<HistoryBlock> HistoryBlocks { get; set; }
+        public virtual User User { get; set; }
     }
 }

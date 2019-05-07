@@ -46,12 +46,14 @@ namespace StudentMajorLeague.Web.Controllers
             this.roleReadService = roleReadService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public string Index()
         {
             return "Student Major League";
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<object> Registration(UserRegistrationRequestModel model)
         {
@@ -86,13 +88,14 @@ namespace StudentMajorLeague.Web.Controllers
                     var newUser = await userWriteService.RegistrationAsync(user);
 
                     //add history
+                    var maxId = await chainReadService.GetMaxBlocksIdAsync();
 
                     var block = new HistoryBlock
                     {
-                        CreatedOn = DateTime.UtcNow,
+                        Id = ++maxId,
                         Changes = "User registration",
                         AuthorId = newUser.Id,
-                        ChainId = newUser.Chain.Id
+                        CreatedOn = DateTime.UtcNow.Date
                     };
 
                     block.Hash = block.HashValues();
@@ -100,7 +103,7 @@ namespace StudentMajorLeague.Web.Controllers
                     var newBlock = await chainWriteService.AddHistoryBlockToChainAsync(newUser.Chain.Id, block);
 
                     //sign in
-                    var identity = SignIn(newUser.Email, newUser.Role.Value);
+                    var identity = SignIn(newUser.Email, newUser.Role.Value, newUser.Id.ToString());
 
                     var token = GetUserToken(identity);
 
@@ -113,6 +116,7 @@ namespace StudentMajorLeague.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<object> Authorization(AuthorizationRequestModel model)
         {
@@ -128,7 +132,9 @@ namespace StudentMajorLeague.Web.Controllers
 
                 if (hashPassword == user.Password)
                 {
-                    var identity = SignIn(user.Email, user.Role.Value);
+                    var role = user.Role;
+
+                    var identity = SignIn(user.Email, user.Role.Value, user.Id.ToString());
 
                     var token = GetUserToken(identity);
 
@@ -164,7 +170,9 @@ namespace StudentMajorLeague.Web.Controllers
                     Education = user.Education,
                     Phone = user.Phone,
                     City = user.City,
-                    LeagueId = user.LeagueId
+                    LeagueId = user.LeagueId,
+                    Height = user.Height,
+                    Weight = user.Weight
                 };
 
                 return JsonResults.Success(result);
@@ -176,7 +184,7 @@ namespace StudentMajorLeague.Web.Controllers
         {
             var isUserExist = await userReadService.IsUserExistAsync(model.Email);
 
-            if (isUserExist)
+            if (!isUserExist)
             {
                 return JsonResults.Error(401, "User is not registered");
             }
@@ -202,12 +210,14 @@ namespace StudentMajorLeague.Web.Controllers
                     var updatedUser = await userWriteService.UpdateUserAsync(user);
 
                     //add history
+                    var maxId = await chainReadService.GetMaxBlocksIdAsync();
+
                     var block = new HistoryBlock
                     {
-                        CreatedOn = DateTime.UtcNow,
-                        Changes = $"Update user. Height = {user.Height}, weight = {user.Weight}",
-                        AuthorId = user.Id,
-                        ChainId = updatedUser.Id
+                        Id = ++maxId,
+                        Changes = $"Update user. Height = {user.Height}, weight = {user.Weight}. Date: {DateTime.UtcNow.ToShortDateString()}",
+                        AuthorId = updatedUser.Id,
+                        CreatedOn = DateTime.UtcNow.Date
                     };
 
                     block.Hash = block.HashValues();
@@ -228,7 +238,11 @@ namespace StudentMajorLeague.Web.Controllers
         {
             try
             {
-                await userWriteService.DeleteUserAsync(userId);
+                //remove chain 1:1
+                await chainWriteService.RemoveChainAsync(userId);
+
+                //remove user
+                await userWriteService.RemoveUserAsync(userId);
 
                 return JsonResults.Success();
             }
@@ -239,12 +253,13 @@ namespace StudentMajorLeague.Web.Controllers
         }
 
         //Utills
-        private ClaimsIdentity SignIn(string email, string role)
+        private ClaimsIdentity SignIn(string email, string role, string userId)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, role)
+                new Claim("Name", email),
+                new Claim("Role", role),
+                new Claim("UserId", userId)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "Token",

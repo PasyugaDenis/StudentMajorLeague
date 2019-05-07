@@ -7,7 +7,7 @@ namespace StudentMajorLeague.Web.Models.Entities
 {
     public class HistoryBlock
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         public DateTime? CreatedOn { get; set; }
@@ -21,9 +21,6 @@ namespace StudentMajorLeague.Web.Models.Entities
         public int AuthorId { get; set; }
 
         public int ChainId { get; set; }
-
-
-        public Chain Chain { get; set; }
 
 
         public string HashValues()

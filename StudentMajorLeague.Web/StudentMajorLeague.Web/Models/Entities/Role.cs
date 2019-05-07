@@ -11,6 +11,6 @@ namespace StudentMajorLeague.Web.Models.Entities
         public string Value { get; set; }
 
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

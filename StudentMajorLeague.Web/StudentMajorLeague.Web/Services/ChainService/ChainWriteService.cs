@@ -13,23 +13,23 @@ namespace StudentMajorLeague.Web.Services.ChainService
         private IChainReadRepository chainReadRepository;
         private IChainWriteRepository chainWriteRepository;
 
-        private IHistoryBlockReadRepository blockReadRepository;
-        private IHistoryBlockWriteRepository blockWriteRepository;
+        private IHistoryBlockReadRepository historyBlockReadRepository;
+        private IHistoryBlockWriteRepository historyBlockWriteRepository;
 
         public ChainWriteService(
             IChainReadService chainReadService,
             IChainReadRepository chainReadRepository,
             IChainWriteRepository chainWriteRepository,
-            IHistoryBlockReadRepository blockReadRepository,
-            IHistoryBlockWriteRepository blockWriteRepository)
+            IHistoryBlockReadRepository historyBlockReadRepository,
+            IHistoryBlockWriteRepository historyBlockWriteRepository)
         {
             this.chainReadService = chainReadService;
 
             this.chainReadRepository = chainReadRepository;
             this.chainWriteRepository = chainWriteRepository;
 
-            this.blockReadRepository = blockReadRepository;
-            this.blockWriteRepository = blockWriteRepository;
+            this.historyBlockReadRepository = historyBlockReadRepository;
+            this.historyBlockWriteRepository = historyBlockWriteRepository;
         }
 
         public async Task<Chain> CreateChainAsync(Chain chain)
@@ -46,16 +46,17 @@ namespace StudentMajorLeague.Web.Services.ChainService
             if (await chainReadService.IsChainValidAsync(chainId))
             {
                 var chain = await chainReadRepository.GetByIdAsync(chainId);
+                var blocks = await historyBlockReadRepository.GetBlocksByChainIdAsync(chainId);
 
-                block.CreatedOn = DateTime.UtcNow;
+                block.ChainId = chainId;
 
-                if (chain.HistoryBlocks?.Count > 0)
+                if (blocks?.Count > 0)
                 {
-                    var lastBlock = await blockReadRepository.GetByIdAsync(chain.LastBlockId.Value);
+                    var lastBlock = await historyBlockReadRepository.GetByIdAsync(chain.LastBlockId.Value);
                     block.PreviousHash = lastBlock.Hash;
                 }
 
-                var newBlock = await blockWriteRepository.AddAsync(block);
+                var newBlock = await historyBlockWriteRepository.AddAsync(block);
 
                 //reload chain
                 chain = await chainReadRepository.GetByIdAsync(chainId);
@@ -68,6 +69,26 @@ namespace StudentMajorLeague.Web.Services.ChainService
             }
 
             return null;
+        }
+
+        public async Task RemoveChainAsync(int chainId)
+        {
+            //remove lastBlockId
+            var chain = await chainReadRepository.GetByIdAsync(chainId);
+
+            chain.LastBlockId = null;
+
+            await chainWriteRepository.UpdateAsync(chain);
+
+            //remove blocks
+            var blocks = await historyBlockReadRepository.GetBlocksByChainIdAsync(chainId);
+
+            await historyBlockWriteRepository.RemoveRangeAsync(blocks);
+
+            //remove chain
+            chain = await chainReadRepository.GetByIdAsync(chainId);
+
+            await chainWriteRepository.RemoveAsync(chain);
         }
     }
 }
