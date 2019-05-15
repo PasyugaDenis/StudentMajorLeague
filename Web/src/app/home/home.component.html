@@ -1,0 +1,101 @@
+<div class="row" ng-init="init()">
+    <div class="col-ld-2 col-md-2 col-xs-12 col-sm-12" style="padding-left:5px;">
+        <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
+            <a class="navbar-brand" (click)="goToUsers()">{{'USERS_TITLE' | translate}}</a>
+        </div>
+        
+        <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
+            <a class="navbar-brand" (click)="goToLeagues()">{{'LEAGUES_TITLE' | translate}}</a>
+        </div>
+
+        <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
+            <a class="navbar-brand" (click)="goToCompetitions()">{{'COMPETITIONS_TITLE' | translate}}</a>
+        </div>
+
+        <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
+            <a class="navbar-brand" (click)="goToProfile()">{{'PROFILE_TITLE' | translate}}</a>
+        </div> 
+
+        <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
+            <a class="navbar-brand" (click)="exit()">{{'EXIT_TITLE' | translate}}</a>
+        </div>
+    </div>
+
+    <div class="col-ld-10 col-md-10 col-xs-12 col-sm-12">
+        <div class="container" *ngIf='selectedTab == "Users"'>
+            <div class="center-block">
+                <h1>{{'USERS_TITLE' | translate}}</h1>
+            </div>
+
+            <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12">                    
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{'NAME_TITLE' | translate}}</th>
+                                <th>{{'SURNAME_TITLE' | translate}}</th>
+                                <th>{{'EMAIL_TITLE' | translate}}</th>
+                                <th>{{'PHONE_TITLE' | translate}}</th>
+                                <th>{{'CITY_TITLE' | translate}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of users">
+                                <td>{{user.Name}}</td>
+                                <td>{{user.Surname}}</td>
+                                <td>{{user.Email}}</td>
+                                <td>{{user.Phone}}</td>
+                                <td>{{user.City}}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>     
+            </div> 
+        </div> 
+            
+        <div class="container" *ngIf='selectedTab == "Leagues"'>
+            <div class="center-block">
+                <h1>{{'LEAGUES_TITLE' | translate}}</h1>
+            </div>
+
+            <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12">                    
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{'ID_TITLE' | translate}}</th>
+                                <th>{{'TITLE_TITLE' | translate}}</th>
+                                <th>{{'MAINLEAGUE_TITLE' | translate}}</th>
+                                <th>{{'DESCRIPTION_TITLE' | translate}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let league of leagues">
+                                <td>{{league.Id}}</td>
+                                <td>{{league.Title}}</td>
+                                <td>{{league.MainLeagueId}}</td>
+                                <td>{{league.Description}}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>     
+            </div> 
+        </div>
+        
+        <div class="container" *ngIf='selectedTab == "Competitions"'>
+            
+        </div>
+
+        <div class="container" *ngIf='selectedTab == "Profile"'>
+            
+        </div>    
+    </div>
+</div> 

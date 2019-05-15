@@ -28,5 +28,12 @@ namespace StudentMajorLeague.Web.Repositories.UserRepository
 
             return result;
         }
+
+        public Task<User[]> GetAllAsync()
+        {
+            var result = dbContext.Users.ToArrayAsync();
+
+            return result;
+        }
     }
 }

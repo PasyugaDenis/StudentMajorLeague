@@ -10,5 +10,7 @@ namespace StudentMajorLeague.Web.Services.UserService
         Task<User> GetUserByEmailAsync(string email);
 
         Task<bool> IsUserExistAsync(string email);
+
+        Task<User[]> GetAllAsync();
     }
 }

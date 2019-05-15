@@ -8,5 +8,7 @@ namespace StudentMajorLeague.Web.Repositories.UserRepository
         Task<User> GetByIdAsync(int id);
 
         Task<User> GetByEmailAsync(string email);
+
+        Task<User[]> GetAllAsync();
     }
 }

@@ -14,16 +14,16 @@ namespace StudentMajorLeague.Web.Services.UserService
             this.userReadRepository = userReadRepository;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public Task<User> GetUserByIdAsync(int id)
         {
-            var result = await userReadRepository.GetByIdAsync(id);
+            var result = userReadRepository.GetByIdAsync(id);
 
             return result;
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public Task<User> GetUserByEmailAsync(string email)
         {
-            var result = await userReadRepository.GetByEmailAsync(email);
+            var result = userReadRepository.GetByEmailAsync(email);
 
             return result;
         }
@@ -33,6 +33,13 @@ namespace StudentMajorLeague.Web.Services.UserService
             var result = await userReadRepository.GetByEmailAsync(email);
 
             return result != null;
+        }
+
+        public async Task<User[]> GetAllAsync()
+        {
+            var result = await userReadRepository.GetAllAsync();
+
+            return result;
         }
     }
 }

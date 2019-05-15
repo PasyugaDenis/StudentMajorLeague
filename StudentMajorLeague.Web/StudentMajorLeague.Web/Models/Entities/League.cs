@@ -12,7 +12,7 @@ namespace StudentMajorLeague.Web.Models.Entities
 
         public string Description { get; set; }
 
-        public int MainLeagueId { get; set; }
+        public int? MainLeagueId { get; set; }
 
 
         public virtual ICollection<User> Users { get; set; }

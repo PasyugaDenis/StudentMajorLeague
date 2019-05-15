@@ -10,11 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace StudentMajorLeague.Web.Controllers
 {
+    [RoutePrefix("api/User")]
     public class UserController : ApiController
     {
         private SMLConfiguration settings;
@@ -47,26 +49,34 @@ namespace StudentMajorLeague.Web.Controllers
         }
 
         [AllowAnonymous]
+        [Route("Index")]
         [HttpGet]
-        public string Index()
+        public IHttpActionResult Index()
         {
-            return "Student Major League";
+            return Ok("Student Major League");
         }
 
         [AllowAnonymous]
+        [Route("Registration")]
         [HttpPost]
-        public async Task<object> Registration(UserRegistrationRequestModel model)
+        public async Task<IHttpActionResult> Registration(UserRegistrationRequestModel model)
         {
-            var isUserExist = await userReadService.IsUserExistAsync(model.Email);
-
-            if (isUserExist)
+            if (!ModelState.IsValid)
             {
-                return JsonResults.Error(401, "User is already registered");
+                return BadRequest($"{model.Name} {model.Surname} {model.Email} {model.Password} {model.Birthday.ToString()} {model.LeagueId}");
             }
-            else
+
+            try
             {
-                try
+                var isUserExist = await userReadService.IsUserExistAsync(model.Email);
+
+                if (isUserExist)
                 {
+                    return BadRequest("User is already registered");
+                }
+                else
+                {
+
                     //registration
                     var chain = new Chain
                     {
@@ -107,90 +117,176 @@ namespace StudentMajorLeague.Web.Controllers
 
                     var token = GetUserToken(identity);
 
-                    return JsonResults.Success(new { token, newUser.Id, newUser.RoleId });
+                    return Ok(new { token, newUser.Id, newUser.RoleId });
                 }
-                catch (Exception ex)
-                {
-                    return JsonResults.Error(400, ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
         [AllowAnonymous]
+        [Route("Authorization")]
         [HttpPost]
-        public async Task<object> Authorization(AuthorizationRequestModel model)
+        public async Task<IHttpActionResult> Authorization(AuthorizationRequestModel model)
         {
-            var user = await userReadService.GetUserByEmailAsync(model.Email);
-
-            if (user == null)
+            if (!ModelState.IsValid)
             {
-                return JsonResults.Error(401, "User is not registered");
-            }
-            else
-            {
-                var hashPassword = userWriteService.HashPassword(model.Password);
+                var errors = new StringBuilder();
 
-                if (hashPassword == user.Password)
+                foreach (var state in ModelState)
                 {
-                    var role = user.Role;
+                    foreach (var error in state.Value.Errors)
+                    {
+                        errors.Append($"{error.ErrorMessage}\n");
+                    }
+                }
 
-                    var identity = SignIn(user.Email, user.Role.Value, user.Id.ToString());
+                return BadRequest(errors.ToString());
+            }
 
-                    var token = GetUserToken(identity);
+            try
+            {
+                var user = await userReadService.GetUserByEmailAsync(model.Email);
 
-                    return JsonResults.Success(new { token, user.Id, user.RoleId });
+                if (user == null)
+                {
+                    return BadRequest("User is not registered");
                 }
                 else
                 {
-                    return JsonResults.Error(402, "IncorrectPassword");
+                    var hashPassword = userWriteService.HashPassword(model.Password);
+
+                    if (hashPassword == user.Password)
+                    {
+                        var role = user.Role;
+
+                        var identity = SignIn(user.Email, user.Role.Value, user.Id.ToString());
+
+                        var token = GetUserToken(identity);
+
+                        return Ok(new { token, user.Id, user.RoleId });
+                    }
+                    else
+                    {
+                        return BadRequest("IncorrectPassword");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
+        [Route("{userId:int}")]
         [HttpGet]
-        public async Task<object> GetUser(int userId)
+        public async Task<IHttpActionResult> GetUser(int userId)
         {
-            var user = await userReadService.GetUserByIdAsync(userId);
+            try
+            {
+                var user = await userReadService.GetUserByIdAsync(userId);
 
-            if (user == null)
-            {
-                return JsonResults.Error(401, "User is not registered");
-            }
-            else
-            {
-                var result = new UserResponseModel
+                if (user == null)
                 {
-                    Id = user.Id,
-                    Email = user.Email,
-                    RegistrationDate = user.RegistrationDate,
-                    RoleId = user.RoleId,
-                    Name = user.Name,
-                    Surname = user.Surname,
-                    Birthday = user.Birthday.Value,
-                    Education = user.Education,
-                    Phone = user.Phone,
-                    City = user.City,
-                    LeagueId = user.LeagueId,
-                    Height = user.Height,
-                    Weight = user.Weight
-                };
+                    return BadRequest("User is not registered");
+                }
+                else
+                {
+                    var result = new UserResponseModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        RegistrationDate = user.RegistrationDate,
+                        RoleId = user.RoleId,
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Birthday = user.Birthday.Value,
+                        Education = user.Education,
+                        Phone = user.Phone,
+                        City = user.City,
+                        LeagueId = user.LeagueId,
+                        Height = user.Height,
+                        Weight = user.Weight
+                    };
 
-                return JsonResults.Success(result);
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
-        [HttpPost]
-        public async Task<object> Update(UserRequestModel model)
+        [Route("")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAll()
         {
-            var isUserExist = await userReadService.IsUserExistAsync(model.Email);
+            try
+            {
+                var result = new List<UserResponseModel>();
 
-            if (!isUserExist)
-            {
-                return JsonResults.Error(401, "User is not registered");
+                var users = await userReadService.GetAllAsync();
+
+                foreach(var user in users)
+                {
+                    result.Add(new UserResponseModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        RegistrationDate = user.RegistrationDate,
+                        RoleId = user.RoleId,
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        Birthday = user.Birthday.Value,
+                        Education = user.Education,
+                        Phone = user.Phone,
+                        City = user.City,
+                        LeagueId = user.LeagueId,
+                        Height = user.Height,
+                        Weight = user.Weight
+                    });
+                }
+
+                return Ok(result);
             }
-            else
+            catch(Exception ex)
             {
-                try
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("Update")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Update(UserRequestModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = new StringBuilder();
+
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        errors.Append($"{error.ErrorMessage}\n");
+                    }
+                }
+
+                return BadRequest(errors.ToString());
+            }
+
+            try
+            {
+                var userById = await userReadService.GetUserByIdAsync(model.Id);
+                var userByEmail = await userReadService.GetUserByEmailAsync(model.Email);
+
+                if (userById == null || (userByEmail != null && userById.Id != userByEmail.Id))
+                {
+                    return BadRequest("User is not registered");
+                }
+                else
                 {
                     var user = new User
                     {
@@ -224,17 +320,18 @@ namespace StudentMajorLeague.Web.Controllers
 
                     var newBlock = await chainWriteService.AddHistoryBlockToChainAsync(updatedUser.Id, block);
 
-                    return JsonResults.Success();
+                    return Ok();
                 }
-                catch (Exception ex)
-                {
-                    return JsonResults.Error(400, ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
+        [Route("Delete/{userId:int}")]
         [HttpGet]
-        public async Task<object> Delete(int userId)
+        public async Task<IHttpActionResult> Delete(int userId)
         {
             try
             {
@@ -244,11 +341,36 @@ namespace StudentMajorLeague.Web.Controllers
                 //remove user
                 await userWriteService.RemoveUserAsync(userId);
 
-                return JsonResults.Success();
+                return Ok();
             }
             catch (Exception ex)
             {
-                return JsonResults.Error(400, ex.Message);
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("History/{userId:int}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserHistory(int userId)
+        {
+            try
+            {
+                var user = await userReadService.GetUserByIdAsync(userId);
+
+                if (user == null)
+                {
+                    return BadRequest("User is not registered");
+                }
+                else
+                {
+                    var result = await chainReadService.GetBlocksInChainAsync(userId);
+
+                    return Ok(result);
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
 
