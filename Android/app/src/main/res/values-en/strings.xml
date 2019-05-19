@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">StudentMajorLeague</string>
+    <string name="password_title">Password</string>
+    <string name="register_title">Registation</string>
+    <string name="authorization_title">Authorization</string>
+    <string name="confirm_password_title">Confirm password</string>
+    <string name="name_title">Name</string>
+    <string name="surname_title">Surname</string>
+    <string name="phone_title">Phone</string>
+    <string name="description_title">Description</string>
+    <string name="save_title">Save</string>
+    <string name="exit_title">Exit</string>
+    <string name="create_title">Create</string>
+    <string name="back_title">Back</string>
+    <string name="email_title">Email</string>
+    <string name="birthday_title">Birthday</string>
+    <string name="league_title">League</string>
+    <string name="users_title">Users</string>
+    <string name="leagues_title">Leagues</string>
+    <string name="competitions_title">Competitions</string>
+</resources>
