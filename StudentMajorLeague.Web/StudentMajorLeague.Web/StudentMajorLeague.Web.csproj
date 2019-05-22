@@ -172,6 +172,7 @@
     <Compile Include="Models\Entities\Role.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Requests\AuthorizationRequestModel.cs" />
+    <Compile Include="Models\Requests\IoTResultRequestModel.cs" />
     <Compile Include="Models\Requests\UserRegistrationRequestModel.cs" />
     <Compile Include="Models\Requests\UserRequestModel.cs" />
     <Compile Include="Models\Responses\LeagueResponseModel.cs" />
@@ -213,6 +214,10 @@
     <Compile Include="Services\LeagueService\Interfaces\ILeagueWriteService.cs" />
     <Compile Include="Services\LeagueService\LeagueReadService.cs" />
     <Compile Include="Services\LeagueService\LeagueWriteService.cs" />
+    <Compile Include="Services\ResultService\Interfaces\IResultReadService.cs" />
+    <Compile Include="Services\ResultService\Interfaces\IResultWriteService.cs" />
+    <Compile Include="Services\ResultService\ResultReadService.cs" />
+    <Compile Include="Services\ResultService\ResultWriteService.cs" />
     <Compile Include="Services\RoleService\Interfaces\IRoleReadService.cs" />
     <Compile Include="Services\RoleService\Interfaces\IRoleWriteService.cs" />
     <Compile Include="Services\RoleService\RoleReadService.cs" />

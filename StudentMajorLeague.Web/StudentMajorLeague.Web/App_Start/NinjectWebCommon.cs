@@ -14,6 +14,7 @@ using StudentMajorLeague.Web.Repositories.RoleRepository;
 using StudentMajorLeague.Web.Repositories.UserRepository;
 using StudentMajorLeague.Web.Services.ChainService;
 using StudentMajorLeague.Web.Services.LeagueService;
+using StudentMajorLeague.Web.Services.ResultService;
 using StudentMajorLeague.Web.Services.RoleService;
 using StudentMajorLeague.Web.Services.UserService;
 using System;
@@ -84,6 +85,9 @@ namespace StudentMajorLeague.Web.App_Start
 
             kernel.Bind<ILeagueReadService>().To<LeagueReadService>();
             kernel.Bind<ILeagueWriteService>().To<LeagueWriteService>();
+
+            kernel.Bind<IResultReadService>().To<ResultReadService>();
+            kernel.Bind<IResultWriteService>().To<ResultWriteService>();
 
             kernel.Bind<IRoleReadService>().To<RoleReadService>();
             kernel.Bind<IRoleWriteService>().To<RoleWriteService>();

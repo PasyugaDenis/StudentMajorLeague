@@ -11,11 +11,7 @@ namespace StudentMajorLeague.Web.Models.Entities
 
         public int CompetitionId { get; set; }
 
-        public string Title { get; set; }
-
         public string Value { get; set; }
-
-        public string Description { get; set; }
 
 
         public virtual User User { get; set; }
