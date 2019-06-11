@@ -23,4 +23,8 @@ export class UserService{
     getAll (): any {
         return this.httpService.getData(this.baseController);
     };
+
+    delete (userId: number): any {
+        return this.httpService.getData(this.baseController + "Remove/" + userId);
+    };
 }

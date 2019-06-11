@@ -13,6 +13,7 @@ using StudentMajorLeague.Web.Repositories.ResultRepository;
 using StudentMajorLeague.Web.Repositories.RoleRepository;
 using StudentMajorLeague.Web.Repositories.UserRepository;
 using StudentMajorLeague.Web.Services.ChainService;
+using StudentMajorLeague.Web.Services.CompetitionService;
 using StudentMajorLeague.Web.Services.LeagueService;
 using StudentMajorLeague.Web.Services.ResultService;
 using StudentMajorLeague.Web.Services.RoleService;
@@ -75,13 +76,20 @@ namespace StudentMajorLeague.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            //Bind settings
+            #region "Bind settings"
+
             var settings = SMLConfiguration.FromWebConfig(ConfigurationManager.AppSettings);
             kernel.Bind<SMLConfiguration>().ToConstant(settings);
 
-            //Bind Services
+            #endregion
+
+            #region "Bind services"
+
             kernel.Bind<IChainReadService>().To<ChainReadService>();
             kernel.Bind<IChainWriteService>().To<ChainWriteService>();
+
+            kernel.Bind<ICompetitionReadService>().To<CompetitionReadService>();
+            kernel.Bind<ICompetitionWriteService>().To<CompetitionWriteService>();
 
             kernel.Bind<ILeagueReadService>().To<LeagueReadService>();
             kernel.Bind<ILeagueWriteService>().To<LeagueWriteService>();
@@ -95,7 +103,10 @@ namespace StudentMajorLeague.Web.App_Start
             kernel.Bind<IUserReadService>().To<UserReadService>();
             kernel.Bind<IUserWriteService>().To<UserWriteService>();
 
-            //Bind repositories
+            #endregion
+
+            #region "Bind repositories"
+
             kernel.Bind<IChainReadRepository>().To<ChainReadRepository>();
             kernel.Bind<IChainWriteRepository>().To<ChainWriteRepository>();
 
@@ -116,6 +127,8 @@ namespace StudentMajorLeague.Web.App_Start
 
             kernel.Bind<IUserReadRepository>().To<UserReadRepository>();
             kernel.Bind<IUserWriteRepository>().To<UserWriteRepository>();
+
+            #endregion
 
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
         }

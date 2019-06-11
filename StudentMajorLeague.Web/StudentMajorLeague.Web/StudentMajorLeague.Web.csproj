@@ -172,7 +172,9 @@
     <Compile Include="Models\Entities\Role.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Models\Requests\AuthorizationRequestModel.cs" />
+    <Compile Include="Models\Requests\CompetitionRequestModel.cs" />
     <Compile Include="Models\Requests\IoTResultRequestModel.cs" />
+    <Compile Include="Models\Requests\LeagueRequestModel.cs" />
     <Compile Include="Models\Requests\UserRegistrationRequestModel.cs" />
     <Compile Include="Models\Requests\UserRequestModel.cs" />
     <Compile Include="Models\Responses\LeagueResponseModel.cs" />
@@ -210,6 +212,10 @@
     <Compile Include="Services\ChainService\ChainWriteService.cs" />
     <Compile Include="Services\ChainService\Interfaces\IChainReadService.cs" />
     <Compile Include="Services\ChainService\Interfaces\IChainWriteService.cs" />
+    <Compile Include="Services\CompetitionService\CompetitionReadService.cs" />
+    <Compile Include="Services\CompetitionService\CompetitionWriteService.cs" />
+    <Compile Include="Services\CompetitionService\Interfaces\ICompetitionReadService.cs" />
+    <Compile Include="Services\CompetitionService\Interfaces\ICompetitionWriteService.cs" />
     <Compile Include="Services\LeagueService\Interfaces\ILeagueReadService.cs" />
     <Compile Include="Services\LeagueService\Interfaces\ILeagueWriteService.cs" />
     <Compile Include="Services\LeagueService\LeagueReadService.cs" />

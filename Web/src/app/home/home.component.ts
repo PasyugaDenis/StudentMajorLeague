@@ -6,6 +6,8 @@ import { HttpService } from '../../services/http.service';
 import { UserResponseModel } from '../../models/user.model';
 import { LeagueService } from '../../services/league.service';
 import { League } from '../../models/league.model';
+import { Competition } from '../../models/competition.model';
+import { CompetitionService } from '../../services/competition.service';
 
 @Component({
     selector: 'home-app',
@@ -13,7 +15,8 @@ import { League } from '../../models/league.model';
     providers: [
         HttpService,
         UserService,
-        LeagueService
+        LeagueService,
+        CompetitionService
     ]
 })
 
@@ -32,16 +35,24 @@ export class HomeComponent implements OnInit {
 
     users: UserResponseModel[];
     leagues: League[];
+    competitions: Competition[];
+
+    selectedLeague: League;
+    selectedCompetition: Competition;
 
     constructor(
         private router: Router,
         private userService: UserService,
-        private leagueService: LeagueService) 
+        private leagueService: LeagueService,
+        private competitionService: CompetitionService) 
     {
         this.userId = 0;
 
         this.users = [];
         this.leagues = [];
+
+        this.selectedLeague = new League();
+        this.selectedCompetition = new Competition();
     };
 
     ngOnInit(): any {
@@ -51,7 +62,7 @@ export class HomeComponent implements OnInit {
         this.goToUsers();
     };
 
-    //navigation
+    //users
     goToUsers(): any {
         this.selectedTab = 'Users';
 
@@ -65,6 +76,18 @@ export class HomeComponent implements OnInit {
         });
     };
 
+    deleteUser(userId: number): any {
+        this.userService.delete(userId).subscribe((data: any) => {
+            if (data.error) {
+                console.log(data.errorMessage);
+            }
+            else {
+                this.goToUsers();
+            }
+        });
+    };
+
+    //leagues   
     goToLeagues(): any {
         this.selectedTab = 'Leagues';
 
@@ -74,17 +97,68 @@ export class HomeComponent implements OnInit {
             }
             else {
                 this.leagues = data;
-                console.log(this.leagues);
-
             }
         });
     };
 
+    editLeague(league: League): any {
+        this.selectedLeague = league;
+    };
+
+    saveLeague(): any {
+        var leaguePromise;
+
+        if (this.selectedLeague.Id == 0) {
+            this.selectedLeague.MainLeagueId = null;
+
+            leaguePromise = this.leagueService.add(this.selectedLeague);
+        }
+        else {
+            leaguePromise = this.leagueService.edit(this.selectedLeague);
+        }
+
+        leaguePromise.subscribe((data: any) => {
+            if (data.error) {
+                console.log(data.errorMessage);
+            }
+            else {
+                this.selectedLeague = new League();
+                this.goToLeagues();
+            }
+        });
+    };
+
+    deleteLeague(leagueId: number): any {
+        this.leagueService.delete(leagueId).subscribe((data: any) => {
+            this.goToLeagues();
+        });
+    };
+
+    resetLeague(): any {
+        this.selectedLeague = new League();
+    };
+
+    //competitions
     goToCompetitions(): any {
         this.selectedTab = 'Competitions';
 
+        this.competitionService.getAll().subscribe((data: any) => {
+            if (data.error) {
+                console.log(data.errorMessage);
+            }
+            else {
+                this.competitions = data;
+            }
+        });
     };
 
+    deleteCompetition(competitionId: number): any {
+        this.competitionService.delete(competitionId).subscribe((data: any) => {
+            this.goToCompetitions();
+        });
+    };
+
+    //profile
     goToProfile(): any {
         this.selectedTab = 'Profile';
 
@@ -96,19 +170,17 @@ export class HomeComponent implements OnInit {
     exit(): any {
         localStorage.removeItem('app_token');
         localStorage.removeItem('userId');
-        localStorage.removeItem('role');
+        localStorage.removeItem('roleId');
 
         this.router.navigate(['']);
     };
 
-    //data control
-
     //private
     private setClaims(): any {
-        var role = localStorage.getItem('role');
+        var roleId = localStorage.getItem('roleId');
 
-        switch (role.toLowerCase()) {
-            case 'admin':
+        switch (roleId) {
+            case '1': //admin
                 this.readUsers = true;
                 this.readLeagues = true;
                 this.readCompetitions = true;
@@ -117,7 +189,7 @@ export class HomeComponent implements OnInit {
                 this.writeCompetitions = true;
                 break;
 
-            case 'student':
+            case '2': //student
                 this.readUsers = true;
                 this.readLeagues = true;
                 this.readCompetitions = true;

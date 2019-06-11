@@ -63,7 +63,7 @@ namespace StudentMajorLeague.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest($"{model.Name} {model.Surname} {model.Email} {model.Password} {model.Birthday.ToString()} {model.LeagueId}");
+                return BadRequest();
             }
 
             try
@@ -329,9 +329,9 @@ namespace StudentMajorLeague.Web.Controllers
             }
         }
 
-        [Route("Delete/{userId:int}")]
+        [Route("Remove/{userId:int}")]
         [HttpGet]
-        public async Task<IHttpActionResult> Delete(int userId)
+        public async Task<IHttpActionResult> Remove(int userId)
         {
             try
             {

@@ -20,5 +20,19 @@ namespace StudentMajorLeague.Web.Services.LeagueService
 
             return result;
         }
+
+        public Task<League> GetByIdAsync(int id)
+        {
+            var result = leagueReadRepository.GetByIdAsync(id);
+
+            return result;
+        }
+
+        public Task<List<League>> GetSubleaguesAsync(int mainId)
+        {
+            var result = leagueReadRepository.GetSubleaguesAsync(mainId);
+
+            return result;
+        }
     }
 }

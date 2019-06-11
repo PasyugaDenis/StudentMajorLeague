@@ -21,11 +21,19 @@ export const LANG_EN_TRANS = {
     'TITLE_TITLE': 'Title',
     'MAINLEAGUE_TITLE': 'Main league',    
     'DESCRIPTION_TITLE': 'Description',
+    'DELETE_BUTTON_TITLE': 'Delete',
+    'EDIT_BUTTON_TITLE': 'Edit',
+    'SAVE_BUTTON_TITLE': 'Save',
+    'RESET_BUTTON_TITLE': 'Reset',
+    'TYPE_TITLE': 'Type',
+    'DATE_TITLE': 'Date',
+    'LOCATION_TITLE': 'Location',
 
     'ERROR_NAME_REQUIRED': 'Name is required',
     'ERROR_SURNAME_REQUIRED': 'Surname is required',
     'ERROR_EMAIL_REQUIRED': 'Email is required',
     'ERROR_PASSWORD_REQUIRED': 'Password is required',
     'ERROR_BIRTHDAY_REQUIRED': 'Birthday is required',
+    'ERROR_TITLE_REQUIRED': 'Title is required',
 
     'ERROR_SELECT_LEAGUE': 'Select league'};

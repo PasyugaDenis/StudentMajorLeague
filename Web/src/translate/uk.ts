@@ -21,11 +21,19 @@ export const LANG_UK_TRANS = {
     'TITLE_TITLE': 'Назва',
     'MAINLEAGUE_TITLE': 'Основна ліга',    
     'DESCRIPTION_TITLE': 'Опис',
+    'DELETE_BUTTON_TITLE': 'Видалити',
+    'EDIT_BUTTON_TITLE': 'Редагувати',
+    'SAVE_BUTTON_TITLE': 'Зберегти',
+    'RESET_BUTTON_TITLE': 'Збросити',
+    'TYPE_TITLE': 'Тип',
+    'DATE_TITLE': 'Дата',
+    'LOCATION_TITLE': 'Локація',
 
     'ERROR_NAME_REQUIRED': "Необхідно ввести ім'я",
     'ERROR_SURNAME_REQUIRED': 'Необхідно ввести прізвище',
     'ERROR_EMAIL_REQUIRED': 'Необхідно ввести email',
     'ERROR_PASSWORD_REQUIRED': 'Необхідно ввести пароль',
     'ERROR_BIRTHDAY_REQUIRED': 'Необхідно ввести дату народження',
+    'ERROR_TITLE_REQUIRED': 'Необхідно ввести назву',
 
     'ERROR_SELECT_LEAGUE': 'Необхідно вибрати лігу'};

@@ -1,5 +1,5 @@
 <div class="row" ng-init="init()">
-    <div class="col-ld-2 col-md-2 col-xs-12 col-sm-12" style="padding-left:5px;">
+    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12" style="padding-left:5px;">
         <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12" style="cursor:pointer">
             <a class="navbar-brand" (click)="goToUsers()">{{'USERS_TITLE' | translate}}</a>
         </div>
@@ -21,13 +21,13 @@
         </div>
     </div>
 
-    <div class="col-ld-10 col-md-10 col-xs-12 col-sm-12">
+    <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
         <div class="container" *ngIf='selectedTab == "Users"'>
             <div class="center-block">
                 <h1>{{'USERS_TITLE' | translate}}</h1>
             </div>
 
-            <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12">                    
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">                    
                 <div class="row">
                     <table class="table table-striped">
                         <thead>
@@ -37,7 +37,7 @@
                                 <th>{{'EMAIL_TITLE' | translate}}</th>
                                 <th>{{'PHONE_TITLE' | translate}}</th>
                                 <th>{{'CITY_TITLE' | translate}}</th>
-                                <th></th>
+                                <th *ngIf="writeUsers"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,8 +47,10 @@
                                 <td>{{user.Email}}</td>
                                 <td>{{user.Phone}}</td>
                                 <td>{{user.City}}</td>
-                                <td>
-
+                                <td *ngIf="writeUsers">
+                                    <button class="btn btn-primary" (click)="deleteUser(user.Id)" *ngIf="user.Id != userId">
+                                        {{'DELETE_BUTTON_TITLE' | translate}}
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -62,7 +64,39 @@
                 <h1>{{'LEAGUES_TITLE' | translate}}</h1>
             </div>
 
-            <div class="col-ld-12 col-md-12 col-xs-12 col-sm-12">                    
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12" *ngIf='writeLeagues'>  
+                <div class="form-group">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedLeague.Title" 
+                        [placeholder] = "'TITLE_TITLE' | translate" name="leagueTitle" #leagueTitle="ngModel" required/>
+
+                    <div [hidden]="leagueTitle.valid || leagueTitle.untouched" class="alert alert-danger">
+                        {{ 'ERROR_TITLE_REQUIRED' | translate }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedLeague.Description" 
+                        [placeholder] = "'DESCRIPTION_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <select style="margin-bottom: 3px" [(ngModel)]="selectedLeague.MainLeagueId" class="form-control">
+                        <option *ngFor="let league of leagues" [value]="league.Id">
+                            {{league.Title}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary col-6" 
+                        (click)="resetLeague()">{{'RESET_BUTTON_TITLE' | translate}}</button>
+
+                    <button [disabled]="leagueTitle.invalid" class="btn btn-primary col-6" 
+                        (click)="saveLeague()">{{'SAVE_BUTTON_TITLE' | translate}}</button>
+                </div>
+            </div>                  
+
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">                    
                 <div class="row">
                     <table class="table table-striped">
                         <thead>
@@ -71,7 +105,7 @@
                                 <th>{{'TITLE_TITLE' | translate}}</th>
                                 <th>{{'MAINLEAGUE_TITLE' | translate}}</th>
                                 <th>{{'DESCRIPTION_TITLE' | translate}}</th>
-                                <th></th>
+                                <th *ngIf="writeLeagues"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,9 +113,15 @@
                                 <td>{{league.Id}}</td>
                                 <td>{{league.Title}}</td>
                                 <td>{{league.MainLeagueId}}</td>
-                                <td>{{league.Description}}</td>
-                                <td>
+                                <td>{{league.Description}}</td>                            
+                                <td *ngIf="writeLeagues">
+                                    <button class="btn btn-primary" (click)="editLeague(league)">
+                                        {{'EDIT_BUTTON_TITLE' | translate}}
+                                    </button>
 
+                                    <button class="btn btn-primary" (click)="deleteLeague(league.Id)">
+                                        {{'DELETE_BUTTON_TITLE' | translate}}
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -91,7 +131,50 @@
         </div>
         
         <div class="container" *ngIf='selectedTab == "Competitions"'>
-            
+            <div class="center-block">
+                <h1>{{'COMPETITIONS_TITLE' | translate}}</h1>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12" *ngIf='writeCompetitions'>  
+                
+            </div>                  
+
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">                    
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{'ID_TITLE' | translate}}</th>
+                                <th>{{'TITLE_TITLE' | translate}}</th>
+                                <th>{{'TYPE_TITLE' | translate}}</th>
+                                <th>{{'DATE_TITLE' | translate}}</th>
+                                <th>{{'LOCATION_TITLE' | translate}}</th>
+                                <th>{{'DESCRIPTION_TITLE' | translate}}</th>
+                                <th *ngIf="writeCompetitions"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let competition of competitions">
+                                <td>{{competition.Id}}</td>
+                                <td>{{competition.Title}}</td>
+                                <td>{{competition.Type}}</td>
+                                <td>{{competition.Date}}</td>
+                                <td>{{competition.Location}}</td>
+                                <td>{{competition.Description}}</td>                            
+                                <td *ngIf="writeCompetitions">
+                                    <button class="btn btn-primary">
+                                        {{'EDIT_BUTTON_TITLE' | translate}}
+                                    </button>
+
+                                    <button class="btn btn-primary" (click)="deleteCompetition(competition.Id)">
+                                        {{'DELETE_BUTTON_TITLE' | translate}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>     
+            </div> 
         </div>
 
         <div class="container" *ngIf='selectedTab == "Profile"'>

@@ -40,10 +40,10 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         var token = localStorage.getItem('app_token');
         var userId = localStorage.getItem('userId');
-        var role = localStorage.getItem('role');
+        var roleId = localStorage.getItem('roleId');
 
         if (token != null && userId != null) {
-            this.goToMain(token, userId, role);
+            this.goToMain(token, userId, roleId);
         }
 
         this.leagueService.getAll().subscribe((data: any) => {
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
                 alert(data.errorMessage);
             }
             else {
-                this.goToMain(data.token, data.userId, data.role);
+                this.goToMain(data.token, data.Id, data.RoleId);
             }
         });
     };
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
                 console.log(userData.errorMessage);
             }
             else {
-                this.goToMain(userData.token, userData.userId, userData.role);
+                this.goToMain(userData.token, userData.Id, userData.RoleId);
             }
         });
     };
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
     private goToMain(token: string, userId: string, role: string): any {
         localStorage.setItem('app_token', token);
         localStorage.setItem('userId', userId);
-        localStorage.setItem('role', role);
+        localStorage.setItem('roleId', role);
 
         this.router.navigate(['home']);
     };

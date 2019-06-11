@@ -21,12 +21,20 @@ export const LANG_RU_TRANS = {
     'TITLE_TITLE': 'Название',
     'MAINLEAGUE_TITLE': 'Основная лига',    
     'DESCRIPTION_TITLE': 'Описание',
+    'DELETE_BUTTON_TITLE': 'Удалить',
+    'EDIT_BUTTON_TITLE': 'Редактировать',
+    'SAVE_BUTTON_TITLE': 'Сохранить',
+    'RESET_BUTTON_TITLE': 'Сбросить',
+    'TYPE_TITLE': 'Тип',
+    'DATE_TITLE': 'Дата',
+    'LOCATION_TITLE': 'Локация',
 
     'ERROR_NAME_REQUIRED': 'Необходимо ввести имя',
     'ERROR_SURNAME_REQUIRED': 'Необходимо ввести фамилию',
     'ERROR_EMAIL_REQUIRED': 'Необходимо ввести email',
     'ERROR_PASSWORD_REQUIRED': 'Необходимо ввести пароль',
     'ERROR_BIRTHDAY_REQUIRED': 'Необходимо ввести дату рождения',
+    'ERROR_TITLE_REQUIRED': 'Необходимо ввести название',
 
     'ERROR_SELECT_LEAGUE': 'Необходимо указать лигу'
 };
