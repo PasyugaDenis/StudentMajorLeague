@@ -11,6 +11,10 @@ namespace StudentMajorLeague.Web.Services.UserService
 
         Task RemoveUserAsync(int userId);
 
+        Task<User> SetAdminRoleAsync(int userId);
+
+        Task<User> SetStudentRoleAsync(int userId);
+
         string HashPassword(string password);
     }
 }

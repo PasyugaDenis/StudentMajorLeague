@@ -1,9 +1,11 @@
 ﻿using StudentMajorLeague.Web.Models.Entities;
 using StudentMajorLeague.Web.Models.Requests;
+using StudentMajorLeague.Web.Models.Responses;
 using StudentMajorLeague.Web.Services.ChainService;
 using StudentMajorLeague.Web.Services.CompetitionService;
 using StudentMajorLeague.Web.Services.ResultService;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -82,7 +84,19 @@ namespace StudentMajorLeague.Web.Controllers
         {
             try
             {
-                var result = await competitionReadService.GetAllAsync();
+                var result = new List<CompetitionResponseModel>();
+
+                var competitions = await competitionReadService.GetAllAsync();
+
+                competitions.ForEach(m => result.Add(new CompetitionResponseModel
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Type = m.Type,
+                    Date = m.Date,
+                    Location = m.Location,
+                    Description = m.Description
+                }));
 
                 return Ok(result);
             }
@@ -98,7 +112,17 @@ namespace StudentMajorLeague.Web.Controllers
         {
             try
             {
-                var result = await competitionReadService.GetByIdAsync(id);
+                var competition = await competitionReadService.GetByIdAsync(id);
+
+                var result = new CompetitionResponseModel
+                {
+                    Id = competition.Id,
+                    Title = competition.Title,
+                    Type = competition.Type,
+                    Date = competition.Date,
+                    Location = competition.Location,
+                    Description = competition.Description
+                };
 
                 return Ok(result);
             }

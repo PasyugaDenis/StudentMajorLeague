@@ -28,6 +28,13 @@ export const LANG_UK_TRANS = {
     'TYPE_TITLE': 'Тип',
     'DATE_TITLE': 'Дата',
     'LOCATION_TITLE': 'Локація',
+    'EDUCATION_TITLE': 'Освіта',
+    'HEIGHT_TITLE': 'Зріст',
+    'WEIGHT_TITLE': 'Вага',
+    'HISTORY_TITLE': 'Історія',
+    'CHANGES_TITLE': 'Зміни',
+    'SET_ADMIN_TITLE': 'Назначити адміном',
+    'SET_STUDENT_TITLE': 'Назначити студентом',
 
     'ERROR_NAME_REQUIRED': "Необхідно ввести ім'я",
     'ERROR_SURNAME_REQUIRED': 'Необхідно ввести прізвище',

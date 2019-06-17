@@ -9,5 +9,7 @@ namespace StudentMajorLeague.Web.Services.CompetitionService
         Task<Competition> GetByIdAsync(int id);
 
         Task<List<Competition>> GetAllAsync();
+
+        Task<List<Competition>> GetByUserIdAsync(int userId);
     }
 }

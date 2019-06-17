@@ -177,6 +177,7 @@
     <Compile Include="Models\Requests\LeagueRequestModel.cs" />
     <Compile Include="Models\Requests\UserRegistrationRequestModel.cs" />
     <Compile Include="Models\Requests\UserRequestModel.cs" />
+    <Compile Include="Models\Responses\CompetitionResponseModel.cs" />
     <Compile Include="Models\Responses\LeagueResponseModel.cs" />
     <Compile Include="Models\Responses\UserResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

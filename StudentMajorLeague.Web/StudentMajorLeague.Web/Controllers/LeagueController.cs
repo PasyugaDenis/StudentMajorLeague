@@ -1,5 +1,4 @@
-﻿using StudentMajorLeague.Web.Infrastructure;
-using StudentMajorLeague.Web.Models.Entities;
+﻿using StudentMajorLeague.Web.Models.Entities;
 using StudentMajorLeague.Web.Models.Requests;
 using StudentMajorLeague.Web.Models.Responses;
 using StudentMajorLeague.Web.Services.LeagueService;

@@ -57,6 +57,30 @@ namespace StudentMajorLeague.Web.Services.UserService
             return user;
         }
 
+        public async Task<User> SetAdminRoleAsync(int userId)
+        {
+            var user = await userReadRepository.GetByIdAsync(userId);
+            var adminRole = await roleReadRepository.GetAdminRoleAsync();
+
+            user.RoleId = adminRole.Id;
+
+            await userWriteRepository.UpdateAsync(user);
+
+            return user;
+        }
+
+        public async Task<User> SetStudentRoleAsync(int userId)
+        {
+            var user = await userReadRepository.GetByIdAsync(userId);
+            var adminRole = await roleReadRepository.GetStudentRoleAsync();
+
+            user.RoleId = adminRole.Id;
+
+            await userWriteRepository.UpdateAsync(user);
+
+            return user;
+        }
+
         public async Task RemoveUserAsync(int userId)
         {
             var user = await userReadRepository.GetByIdAsync(userId);

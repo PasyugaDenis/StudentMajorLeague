@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class LeaguesActivity extends AppCompatActivity {
-    String[] leagues = { "League 1", "League 2", "League 3", "League 4", "League 5" };
+    String[] leagues = { "NCAA", "NCAA Division 1", "NCAA Division 2", "NCAA Division 3",
+            "NAIA", "NAIA Division 1", "NAIA Division 2",
+            "NJCAA", "NJCAA Division 1", "NJCAA Division 2", "NJCAA Division 3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

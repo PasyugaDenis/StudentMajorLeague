@@ -28,6 +28,13 @@ export const LANG_EN_TRANS = {
     'TYPE_TITLE': 'Type',
     'DATE_TITLE': 'Date',
     'LOCATION_TITLE': 'Location',
+    'EDUCATION_TITLE': 'Education',
+    'HEIGHT_TITLE': 'Height',
+    'WEIGHT_TITLE': 'Weight',
+    'HISTORY_TITLE': 'History',
+    'CHANGES_TITLE': 'Changes',
+    'SET_ADMIN_TITLE': 'Set Admin',
+    'SET_STUDENT_TITLE': 'Set Student',
 
     'ERROR_NAME_REQUIRED': 'Name is required',
     'ERROR_SURNAME_REQUIRED': 'Surname is required',

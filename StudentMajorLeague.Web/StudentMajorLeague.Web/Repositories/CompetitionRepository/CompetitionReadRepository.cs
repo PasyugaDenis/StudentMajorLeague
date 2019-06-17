@@ -31,5 +31,17 @@ namespace StudentMajorLeague.Web.Repositories.CompetitionRepository
 
             return result;
         }
+
+        public async Task<List<Competition>> GetByUserIdAsync(int userId)
+        {
+            var competitionIds = await dbContext.Results
+                .Where(m => m.UserId == userId)
+                .Select(m => m.CompetitionId).Distinct()
+                .ToListAsync();
+
+            var result = await dbContext.Competitions.Where(m => competitionIds.Contains(m.Id)).ToListAsync();
+
+            return result;
+        }
     }
 }

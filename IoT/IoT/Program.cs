@@ -22,7 +22,7 @@ namespace IoT
 
         static void Main(string[] args)
         {
-            client.BaseAddress = new Uri("http://localhost:49680/");
+            client.BaseAddress = new Uri("https://studentmajorleaguebeta.azurewebsites.net/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

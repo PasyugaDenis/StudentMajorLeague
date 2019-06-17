@@ -4,6 +4,7 @@ using StudentMajorLeague.Web.Models.Entities;
 using StudentMajorLeague.Web.Models.Requests;
 using StudentMajorLeague.Web.Models.Responses;
 using StudentMajorLeague.Web.Services.ChainService;
+using StudentMajorLeague.Web.Services.CompetitionService;
 using StudentMajorLeague.Web.Services.RoleService;
 using StudentMajorLeague.Web.Services.UserService;
 using System;
@@ -29,13 +30,16 @@ namespace StudentMajorLeague.Web.Controllers
 
         private IRoleReadService roleReadService;
 
+        private ICompetitionReadService competitionReadService;
+
         public UserController(
             SMLConfiguration settings,
             IUserReadService userReadService,
             IUserWriteService userWriteService,
             IChainReadService chainReadService,
             IChainWriteService chainWriteService,
-            IRoleReadService roleReadService)
+            IRoleReadService roleReadService,
+            ICompetitionReadService competitionReadService)
         {
             this.settings = settings;
 
@@ -46,6 +50,8 @@ namespace StudentMajorLeague.Web.Controllers
             this.chainWriteService = chainWriteService;
 
             this.roleReadService = roleReadService;
+
+            this.competitionReadService = competitionReadService;
         }
 
         [AllowAnonymous]
@@ -325,7 +331,7 @@ namespace StudentMajorLeague.Web.Controllers
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                return Ok(ex.Message);
             }
         }
 
@@ -369,6 +375,66 @@ namespace StudentMajorLeague.Web.Controllers
                 }
             }
             catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("Competitions/{userId:int}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserCompetitions(int userId)
+        {
+            try
+            {
+                var result = new List<CompetitionResponseModel>();
+
+                var competitions = await competitionReadService.GetByUserIdAsync(userId);
+
+                competitions.ForEach(m => result.Add(new CompetitionResponseModel
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Type = m.Type,
+                    Date = m.Date,
+                    Location = m.Location,
+                    Description = m.Description
+                }));
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("SetAdmin/{userId:int}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> SetAdmin(int userId)
+        {
+            try
+            {
+                await userWriteService.SetAdminRoleAsync(userId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("SetStudent/{userId:int}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> SetStudent(int userId)
+        {
+            try
+            {
+                await userWriteService.SetStudentRoleAsync(userId);
+
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }

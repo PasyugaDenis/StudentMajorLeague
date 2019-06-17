@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { UserAuthorizationRequestModel, UserRegistrationRequestModel } from '../models/user.model';
+import { UserAuthorizationRequestModel, UserRegistrationRequestModel, UserResponseModel } from '../models/user.model';
 
 @Injectable()
 export class UserService{
@@ -24,7 +24,27 @@ export class UserService{
         return this.httpService.getData(this.baseController);
     };
 
+    getHistory (userId: number): any {
+        return this.httpService.getData(this.baseController + "History/" + userId);
+    };
+
+    getCompetitions (userId: number): any {
+        return this.httpService.getData(this.baseController + "Competitions/" + userId);
+    };
+
     delete (userId: number): any {
         return this.httpService.getData(this.baseController + "Remove/" + userId);
+    };
+
+    edit (user: UserResponseModel): any {
+        return this.httpService.postData(this.baseController + "Update", user);
+    };
+
+    setAdmin (userId: number): any {
+        return this.httpService.getData(this.baseController + "SetAdmin/" + userId);
+    };
+    
+    setStudent (userId: number): any {
+        return this.httpService.getData(this.baseController + "SetStudent/" + userId);
     };
 }

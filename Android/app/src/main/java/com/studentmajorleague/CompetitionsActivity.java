@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class CompetitionsActivity extends AppCompatActivity {
-    String[] competitions = { "Competition 1", "Competition 2", "Competition 3", "Competition 4", "Competition 5" };
+    String[] competitions = { "ITSprint, Swimming", "CMAS SUPER SPRINT CUP, Swimming", "1st CUP, MMA" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

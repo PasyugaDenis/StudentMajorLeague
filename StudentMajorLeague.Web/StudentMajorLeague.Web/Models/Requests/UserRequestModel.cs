@@ -8,17 +8,14 @@ namespace StudentMajorLeague.Web.Models.Requests
         [Required(ErrorMessage = "Id is required")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Id is required")]
+        [Required(ErrorMessage = "Email is required")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Id is required")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Id is required")]
         public string Surname { get; set; }
 
-        [Required(ErrorMessage = "Id is required")]
         public DateTime Birthday { get; set; }
 
         public string Education { get; set; }

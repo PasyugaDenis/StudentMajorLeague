@@ -27,9 +27,9 @@
                 <h1>{{'USERS_TITLE' | translate}}</h1>
             </div>
 
-            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">                    
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
                 <div class="row">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>{{'NAME_TITLE' | translate}}</th>
@@ -47,9 +47,17 @@
                                 <td>{{user.Email}}</td>
                                 <td>{{user.Phone}}</td>
                                 <td>{{user.City}}</td>
-                                <td *ngIf="writeUsers">
-                                    <button class="btn btn-primary" (click)="deleteUser(user.Id)" *ngIf="user.Id != userId">
+                                <td *ngIf="writeUsers && user.Id != userId">
+                                    <button class="btn btn-primary" (click)="deleteUser(user.Id)">
                                         {{'DELETE_BUTTON_TITLE' | translate}}
+                                    </button>
+
+                                    <button class="btn btn-primary" (click)="setAdmin(user.Id)" *ngIf="user.RoleId != 1">
+                                        {{'SET_ADMIN_TITLE' | translate}}
+                                    </button>
+
+                                    <button class="btn btn-primary" (click)="setStudent(user.Id)" *ngIf="user.RoleId != 2">
+                                        {{'SET_STUDENT_TITLE' | translate}}
                                     </button>
                                 </td>
                             </tr>
@@ -66,6 +74,8 @@
 
             <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12" *ngIf='writeLeagues'>  
                 <div class="form-group">
+                    <label>{{ 'TITLE_TITLE' | translate }}</label>
+                    
                     <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedLeague.Title" 
                         [placeholder] = "'TITLE_TITLE' | translate" name="leagueTitle" #leagueTitle="ngModel" required/>
 
@@ -75,11 +85,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label>{{ 'DESCRIPTION_TITLE' | translate }}</label>
+
                     <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedLeague.Description" 
                         [placeholder] = "'DESCRIPTION_TITLE' | translate"/>
                 </div>
 
                 <div class="form-group">
+                    <label>{{ 'MAINLEAGUE_TITLE' | translate }}</label>
+
                     <select style="margin-bottom: 3px" [(ngModel)]="selectedLeague.MainLeagueId" class="form-control">
                         <option *ngFor="let league of leagues" [value]="league.Id">
                             {{league.Title}}
@@ -135,11 +149,60 @@
                 <h1>{{'COMPETITIONS_TITLE' | translate}}</h1>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12" *ngIf='writeCompetitions'>  
-                
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12" *ngIf='writeCompetitions'>
+                <div class="form-group">
+                    <label>{{ 'TITLE_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedCompetition.Title" 
+                        [placeholder] = "'TITLE_TITLE' | translate" name="competitionTitle" #competitionTitle="ngModel" required/>
+
+                    <div [hidden]="competitionTitle.valid || competitionTitle.untouched" class="alert alert-danger">
+                        {{ 'ERROR_TITLE_REQUIRED' | translate }}
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label>{{ 'TYPE_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedCompetition.Type" 
+                        [placeholder] = "'TYPE_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'DATE_TITLE' | translate }}</label>
+
+                    <input type="date" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedCompetition.Date"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'LOCATION_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedCompetition.Location" 
+                        [placeholder] = "'LOCATION_TITLE' | translate" 
+                        name="competitionLocation" #competitionLocation="ngModel" required/>
+
+                    <div [hidden]="competitionLocation.valid || competitionLocation.untouched" class="alert alert-danger">
+                        {{ 'ERROR_TITLE_REQUIRED' | translate }}
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label>{{ 'DESCRIPTION_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="selectedCompetition.Description" 
+                        [placeholder] = "'DESCRIPTION_TITLE' | translate"/>
+                </div>
+        
+                <div class="form-group">
+                    <button class="btn btn-primary col-6" 
+                        (click)="resetCompetition()">{{'RESET_BUTTON_TITLE' | translate}}</button>
+
+                    <button [disabled]="competitionTitle.invalid && competitionLocation.invalid" class="btn btn-primary col-6" 
+                        (click)="saveCompetition()">{{'SAVE_BUTTON_TITLE' | translate}}</button>
+                </div>
             </div>                  
 
-            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">                    
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
                 <div class="row">
                     <table class="table table-striped">
                         <thead>
@@ -158,11 +221,11 @@
                                 <td>{{competition.Id}}</td>
                                 <td>{{competition.Title}}</td>
                                 <td>{{competition.Type}}</td>
-                                <td>{{competition.Date}}</td>
+                                <td>{{competition.Date | date:'MM:dd:yyyy'}}</td>
                                 <td>{{competition.Location}}</td>
                                 <td>{{competition.Description}}</td>                            
                                 <td *ngIf="writeCompetitions">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary" (click)="editCompetition(competition)">
                                         {{'EDIT_BUTTON_TITLE' | translate}}
                                     </button>
 
@@ -178,7 +241,147 @@
         </div>
 
         <div class="container" *ngIf='selectedTab == "Profile"'>
+            <div class="center-block">
+                <h1>{{'PROFILE_TITLE' | translate}}</h1>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">  
+                <div class="form-group">
+                    <label>{{ 'EMAIL_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" [(ngModel)]="user.Email" 
+                        [placeholder] = "'EMAIL_TITLE' | translate" name="userEmail" #userEmail="ngModel" required/>
+
+                    <div [hidden]="userEmail.valid || userEmail.untouched" class="alert alert-danger">
+                        {{ 'ERROR_EMAIL_REQUIRED' | translate }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'NAME_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Name" [placeholder] = "'NAME_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'SURNAME_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Surname" [placeholder] = "'SURNAME_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'BIRTHDAY_TITLE' | translate }}</label>
+
+                    <input type="date" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Birthday" [placeholder] = "'BIRTHDAY_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'EDUCATION_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Education" [placeholder] = "'EDUCATION_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'PHONE_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Phone" [placeholder] = "'PHONE_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'CITY_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.City" [placeholder] = "'CITY_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'LEAGUE_TITLE' | translate }}</label>
+
+                    <select style="margin-bottom: 3px" [(ngModel)]="user.LeagueId" class="form-control">
+                        <option *ngFor="let league of leagues" [value]="league.Id">
+                            {{league.Title}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'HEIGHT_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Height" [placeholder] = "'HEIGHT_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ 'WEIGHT_TITLE' | translate }}</label>
+
+                    <input type="text" class="form-control" style="margin-bottom: 3px" 
+                        [(ngModel)]="user.Weight" [placeholder] = "'WEIGHT_TITLE' | translate"/>
+                </div>
+
+                <div class="form-group">
+                    <button [disabled]="userEmail.invalid" class="btn btn-primary col-6" 
+                        (click)="saveProfile()">{{'SAVE_BUTTON_TITLE' | translate}}</button>
+                </div>
+            </div>                  
+
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">  
+                <div class="center-block">
+                    <h1>{{'HISTORY_TITLE' | translate}}</h1>
+                </div>
+
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{'CHANGES_TITLE' | translate}}</th>
+                                <th>{{'DATE_TITLE' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of userHistory">
+                                <td>{{item.Changes}}</td>
+                                <td>{{item.CreatedOn | date:'MM:dd:yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>     
+            </div> 
+    
+            <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
+                <div class="center-block">
+                    <h1>{{'COMPETITIONS_TITLE' | translate}}</h1>
+                </div>
             
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{{'ID_TITLE' | translate}}</th>
+                                <th>{{'TITLE_TITLE' | translate}}</th>
+                                <th>{{'TYPE_TITLE' | translate}}</th>
+                                <th>{{'DATE_TITLE' | translate}}</th>
+                                <th>{{'LOCATION_TITLE' | translate}}</th>
+                                <th>{{'DESCRIPTION_TITLE' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let competition of userCompetitions">
+                                <td>{{competition.Id}}</td>
+                                <td>{{competition.Title}}</td>
+                                <td>{{competition.Type}}</td>
+                                <td>{{competition.Date | date:'MM:dd:yyyy'}}</td>
+                                <td>{{competition.Location}}</td>
+                                <td>{{competition.Description}}</td>                            
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>     
+            </div>     
         </div>    
     </div>
 </div> 

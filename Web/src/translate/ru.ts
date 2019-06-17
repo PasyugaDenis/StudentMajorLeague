@@ -28,6 +28,13 @@ export const LANG_RU_TRANS = {
     'TYPE_TITLE': 'Тип',
     'DATE_TITLE': 'Дата',
     'LOCATION_TITLE': 'Локация',
+    'EDUCATION_TITLE': 'Образование',
+    'HEIGHT_TITLE': 'Рост',
+    'WEIGHT_TITLE': 'Вес',
+    'HISTORY_TITLE': 'История',
+    'CHANGES_TITLE': 'Изменения',
+    'SET_ADMIN_TITLE': 'Назначить админом',
+    'SET_STUDENT_TITLE': 'Назначить студентом',
 
     'ERROR_NAME_REQUIRED': 'Необходимо ввести имя',
     'ERROR_SURNAME_REQUIRED': 'Необходимо ввести фамилию',

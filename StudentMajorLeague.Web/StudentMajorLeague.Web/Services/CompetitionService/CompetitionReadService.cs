@@ -27,5 +27,12 @@ namespace StudentMajorLeague.Web.Services.CompetitionService
 
             return result;
         }
+
+        public async Task<List<Competition>> GetByUserIdAsync(int userId)
+        {
+            var result = await competitionReadRepository.GetByUserIdAsync(userId);
+
+            return result;
+        }
     }
 }

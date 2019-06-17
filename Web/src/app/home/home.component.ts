@@ -8,6 +8,7 @@ import { LeagueService } from '../../services/league.service';
 import { League } from '../../models/league.model';
 import { Competition } from '../../models/competition.model';
 import { CompetitionService } from '../../services/competition.service';
+import { HistoryBlock } from '../../models/historyblock.model';
 
 @Component({
     selector: 'home-app',
@@ -36,6 +37,8 @@ export class HomeComponent implements OnInit {
     users: UserResponseModel[];
     leagues: League[];
     competitions: Competition[];
+    userHistory: HistoryBlock[];
+    userCompetitions: Competition[];
 
     selectedLeague: League;
     selectedCompetition: Competition;
@@ -48,8 +51,13 @@ export class HomeComponent implements OnInit {
     {
         this.userId = 0;
 
+        this.user = new UserResponseModel();
+
         this.users = [];
         this.leagues = [];
+        this.competitions = [];
+        this.userHistory = [];
+        this.userCompetitions = [];
 
         this.selectedLeague = new League();
         this.selectedCompetition = new Competition();
@@ -84,6 +92,18 @@ export class HomeComponent implements OnInit {
             else {
                 this.goToUsers();
             }
+        });
+    };
+
+    setAdmin(userId: number): any {
+        this.userService.setAdmin(userId).subscribe((data: any) => {
+            this.goToUsers();
+        });
+    };
+
+    setStudent(userId: number): any {
+        this.userService.setStudent(userId).subscribe((data: any) => {
+            this.goToUsers();
         });
     };
 
@@ -152,10 +172,39 @@ export class HomeComponent implements OnInit {
         });
     };
 
+    editCompetition(competition: Competition): any {
+        this.selectedCompetition = competition;
+    };
+
+    saveCompetition(): any {
+        var competitionPromise;
+
+        if (this.selectedCompetition.Id == 0) {
+            competitionPromise = this.competitionService.add(this.selectedCompetition);
+        }
+        else {
+            competitionPromise = this.competitionService.edit(this.selectedCompetition);
+        }
+
+        competitionPromise.subscribe((data: any) => {
+            if (data.error) {
+                console.log(data.errorMessage);
+            }
+            else {
+                this.selectedCompetition = new Competition();
+                this.goToCompetitions();
+            }
+        });
+    };
+
     deleteCompetition(competitionId: number): any {
         this.competitionService.delete(competitionId).subscribe((data: any) => {
             this.goToCompetitions();
         });
+    };
+
+    resetCompetition(): any {
+        this.selectedCompetition = new Competition();
     };
 
     //profile
@@ -164,6 +213,20 @@ export class HomeComponent implements OnInit {
 
         this.userService.getById(this.userId).subscribe((userData: any) => {
             this.user = userData;
+        });
+
+        this.userService.getHistory(this.userId).subscribe((userData: any) => {
+            this.userHistory = userData;
+        });
+
+        this.userService.getCompetitions(this.userId).subscribe((userData: any) => {
+            this.userCompetitions = userData;
+        });
+    };
+
+    saveProfile(): any {
+        this.userService.edit(this.user).subscribe((data: any) => {
+            this.goToProfile();
         });
     };
 

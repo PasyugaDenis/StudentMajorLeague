@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class UsersActivity extends AppCompatActivity {
 
-    String[] users = { "User 1", "User 2", "User 3", "User 4", "User 5" };
+    String[] users = { "Denis Pasyuga", "Test Test" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
