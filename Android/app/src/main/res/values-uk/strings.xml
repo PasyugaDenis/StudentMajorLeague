@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">StudentMajorLeague</string>
+    <string name="password_title">Пароль</string>
+    <string name="register_title">Реєстрація</string>
+    <string name="authorization_title">Авторизація</string>
+    <string name="confirm_password_title">Підтвердіть пароль</string>
+    <string name="name_title">Ім\'я</string>
+    <string name="phone_title">Телефон</string>
+    <string name="surname_title">Прізвище</string>
+    <string name="description_title">Опис</string>
+    <string name="save_title">Зберегти</string>
+    <string name="exit_title">Вийти</string>
+    <string name="create_title">Створити</string>
+    <string name="back_title">Назад</string>
+    <string name="email_title">Email</string>
+    <string name="birthday_title">День народження</string>
+    <string name="league_title">Ліга</string>
+    <string name="users_title">Користувачі</string>
+    <string name="leagues_title">Ліги</string>
+    <string name="competitions_title">Змагання</string>
+</resources>
